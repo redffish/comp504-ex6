@@ -90,7 +90,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>Main</mainClass>
+                            <mainClass>edu.rice.comp504.controller.BallWorldController</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -102,11 +102,11 @@
                 <configuration>
                     <jdkVersion>${jdk.version}</jdkVersion>
                     <!-- Use your own application name -->
-                    <appName>spark-heroku-example</appName>
+                    <appName>jh166-ex6-ball-wall</appName>
                     <processTypes>
                         <!-- Tell Heroku how to launch your application -->
                         <!-- You might have to remove the ./ in front   -->
-                        <web>java -jar ./target/my-app-1.0-jar-with-dependencies.jar</web>
+                        <web>java -jar ./target/ex6-1.0-SNAPSHOT-jar-with-dependencies.jar</web>
                     </processTypes>
                 </configuration>
             </plugin>
