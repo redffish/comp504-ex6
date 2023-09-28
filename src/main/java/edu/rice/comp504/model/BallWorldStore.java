@@ -75,7 +75,7 @@ public class BallWorldStore {
         // TODO: add paint object to property change listener list
         // APaintObject po = NullObject.make();
         APaintObject po;
-        switch(type.toLowerCase()) {
+        switch (type.toLowerCase()) {
             case "ball":
                 po = Ball.makeBall(StraightStrategy.makeStrategy(), getCanvasDims());
                 break;
