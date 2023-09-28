@@ -1,0 +1,32 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+# Maven build directory
+# Note: leading / means only ignore the root-level target directory
+# , not subdirectory targets
+/target/
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# Temporary files
+*~
+*.swp
+*.swo
+*.tmp
+*.bak
+*.swm
+
+# OS-specific
+.DS_Store
+Thumbs.db

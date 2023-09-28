@@ -30,7 +30,9 @@ public class BallWorldController {
             return gson.toJson(po);
         });
 
-        get("/update", (request, response) -> gson.toJson(dis.updateBallWorld()));
+        get("/update", (request, response) -> {
+            return gson.toJson(dis.updateBallWorld());
+        });
 
         post("/canvas/dims", (request, response) -> {
             BallWorldStore.setCanvasDims(request.queryParams("height"),request.queryParams("width"));

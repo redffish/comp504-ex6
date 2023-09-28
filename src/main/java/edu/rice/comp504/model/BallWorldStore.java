@@ -8,6 +8,8 @@ import edu.rice.comp504.model.paintobj.Wall;
 import edu.rice.comp504.model.strategy.NullStrategy;
 import edu.rice.comp504.model.strategy.StraightStrategy;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.awt.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -19,7 +21,7 @@ import java.util.stream.Stream;
  */
 public class BallWorldStore {
     private static Point dims;
-    private final PropertyChangeSupport pcs;
+    private PropertyChangeSupport pcs;
 
     /**
      * Constructor.
@@ -50,7 +52,17 @@ public class BallWorldStore {
      */
     public PropertyChangeListener[] updateBallWorld() {
         // TODO: updateBallWorld
-        pcs.firePropertyChange("theClock", null, /*pass update cmd*/null);
+        List<PropertyChangeListener> wallList = new ArrayList<>();
+        for (PropertyChangeListener pcl : pcs.getPropertyChangeListeners()) {
+            if ( ((APaintObject) pcl).getType().equals("wall") ) {
+                wallList.add(pcl);
+            }
+        }
+
+        PropertyChangeListener[] innerWalls = wallList.toArray(new PropertyChangeListener[0]);
+
+        UpdateStateCmd updateStateCmd = new UpdateStateCmd(innerWalls);
+        pcs.firePropertyChange("theClock", null, /*pass update cmd*/updateStateCmd);
         return pcs.getPropertyChangeListeners();
     }
 
@@ -61,7 +73,19 @@ public class BallWorldStore {
      */
     public APaintObject loadPaintObj(String type) {
         // TODO: add paint object to property change listener list
-        APaintObject po = NullObject.make();
+        // APaintObject po = NullObject.make();
+        APaintObject po;
+        switch(type.toLowerCase()) {
+            case "ball":
+                po = Ball.makeBall(StraightStrategy.makeStrategy(), getCanvasDims());
+                break;
+            case "wall":
+                po = Wall.makeWall(NullStrategy.makeStrategy(), getCanvasDims());
+                break;
+            default:
+                po = NullObject.make();
+                break;
+        }
 
         addListener(po);
         return po;

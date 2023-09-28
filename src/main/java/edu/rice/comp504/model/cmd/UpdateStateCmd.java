@@ -30,6 +30,25 @@ public class UpdateStateCmd implements IPaintObjCmd {
         context.detectCollisionBoundary();
 
         // TODO: check if there's a collision between a ball and an inner wall
+        if ( context.getType().equals("ball") ) {
+            for (PropertyChangeListener iWall : iWalls) {
+                if (((APaintObject) iWall).getType().equals("wall") && ((Ball) context).detectCollisionInnerWall((Wall) iWall)) {
+                    int wallLen = ((Wall) iWall).getLength();
+                    int ballRadius = ((Ball) context).getRadius();
+                    if (wallLen > ballRadius) {
+                        ((Wall) iWall).setLength(ballRadius);
+                    }
+                    ((Wall) iWall).setLocation(context.getLocation());
+                    ((Wall) iWall).setVelocity(context.getVelocity());
+                    ((Wall) iWall).setStrategy(context.getStrategy());
+                }
+            }
+        } else if ( context.getType().equals("wall") ) {
+            System.out.println("This is a wall");
+        } else {  // null object
+            System.out.println("This is a null object");
+        }
+
         context.getStrategy().updateState(context);
     }
 
