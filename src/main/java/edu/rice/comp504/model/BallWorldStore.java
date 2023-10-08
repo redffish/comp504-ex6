@@ -52,18 +52,10 @@ public class BallWorldStore {
      */
     public PropertyChangeListener[] updateBallWorld() {
         // TODO: updateBallWorld
-        List<PropertyChangeListener> wallList = new ArrayList<>();
-        for (PropertyChangeListener pcl : pcs.getPropertyChangeListeners()) {
-            if ( ((APaintObject) pcl).getType().equals("wall") ) {
-                wallList.add(pcl);
-            }
-        }
-
-        PropertyChangeListener[] innerWalls = wallList.toArray(new PropertyChangeListener[0]);
-
-        UpdateStateCmd updateStateCmd = new UpdateStateCmd(innerWalls);
-        pcs.firePropertyChange("theClock", null, /*pass update cmd*/updateStateCmd);
-        return pcs.getPropertyChangeListeners();
+        PropertyChangeListener[] pclArr = pcs.getPropertyChangeListeners("theClock");
+        UpdateStateCmd updateStateCmd = new UpdateStateCmd(pclArr);
+        pcs.firePropertyChange("theClock", null, updateStateCmd);
+        return pclArr;
     }
 
     /**

@@ -31,22 +31,31 @@ public class UpdateStateCmd implements IPaintObjCmd {
 
         // TODO: check if there's a collision between a ball and an inner wall
         if ( context.getType().equals("ball") ) {
-            for (PropertyChangeListener iWall : iWalls) {
-                if (((APaintObject) iWall).getType().equals("wall") && ((Ball) context).detectCollisionInnerWall((Wall) iWall)) {
-                    int wallLen = ((Wall) iWall).getLength();
-                    int ballRadius = ((Ball) context).getRadius();
-                    if (wallLen > ballRadius) {
-                        ((Wall) iWall).setLength(ballRadius);
+            Ball ball = (Ball) context;
+            for (PropertyChangeListener pcl : iWalls) {
+                APaintObject po = (APaintObject) pcl;
+                if (po.getType().equals("wall")) {
+                    Wall wall = (Wall) po;
+                    if (ball.detectCollisionInnerWall(wall)) {
+                        int wallLen = wall.getLength();
+                        int ballRadius = ball.getRadius();
+                        if (wallLen > ballRadius) {
+                            wall.setLength(ballRadius);
+                        }
+                        wall.setLocation(ball.getLocation());
+                        wall.setVelocity(ball.getVelocity());
+                        wall.setStrategy(ball.getStrategy());
+
+                        wall.getStrategy().updateState(wall);
                     }
-                    ((Wall) iWall).setLocation(context.getLocation());
-                    ((Wall) iWall).setVelocity(context.getVelocity());
-                    ((Wall) iWall).setStrategy(context.getStrategy());
                 }
             }
         } else if ( context.getType().equals("wall") ) {
-            System.out.println("This is a wall");
-        } else {  // null object
-            System.out.println("This is a null object");
+            // do something else
+            // System.out.println("wall");
+        } else {
+            // do something else
+            // System.out.println("null object");
         }
 
         context.getStrategy().updateState(context);
